@@ -1,4 +1,5 @@
 import { Request, Response, Router } from "express";
+import { Blog } from "../interfaces/Blog";
 
 const router = Router();
 
@@ -11,7 +12,7 @@ const getCurrentDateTime = (): string => {
   }-${date.getDate()}T${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 };
 
-router.post("/blog", (req: Request, res: Response) => {
+router.post("/blogs", (req: Request, res: Response) => {
   const { header, body } = req.body;
   const blog = {
     header,
@@ -24,11 +25,11 @@ router.post("/blog", (req: Request, res: Response) => {
   return res.json(blog);
 });
 
-router.get("/blog", (req: Request, res: Response) => {
+router.get("/blogs", (req: Request, res: Response) => {
   return res.json(blogs);
 });
 
-router.get("/blog/:id", (req: Request, res: Response) => {
+router.get("/blogs/:id", (req: Request, res: Response) => {
   const { id } = req.params;
 
   const blog = blogs.find((blog) => blog.id === parseInt(id));
@@ -38,7 +39,7 @@ router.get("/blog/:id", (req: Request, res: Response) => {
   return res.json(blog);
 });
 
-router.delete("/blog/:id", (req: Request, res: Response) => {
+router.delete("/blogs/:id", (req: Request, res: Response) => {
   const { id } = req.params;
 
   blogs.forEach((blog, index) => {
