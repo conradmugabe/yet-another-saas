@@ -20,6 +20,8 @@ router.post("/blogs", (req: Request, res: Response) => {
     id: blogs.length + 1,
     createdAt: getCurrentDateTime(),
     updatedAt: getCurrentDateTime(),
+    likes: 0,
+    comments: [],
   };
   blogs.push(blog);
   return res.json(blog);
@@ -62,6 +64,29 @@ router.put("/blog/:id", (req: Request, res: Response) => {
     blog.updatedAt = getCurrentDateTime();
   }
   return res.json(blog);
+});
+
+router.post("/blogs/:id/comments", (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { comment } = req.body;
+
+  const blog = blogs.find((blog) => blog.id === +id);
+  if (!blog) {
+    return res.status(404).json({ message: "Blog not found" });
+  }
+  blog.comments.push(comment);
+  return res.json({ comment, blogId: blog.id });
+});
+
+router.post("/blogs/:id/likes", (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const blog = blogs.find((blog) => blog.id === +id);
+  if (!blog) {
+    return res.status(404).json({ message: "Blog not found" });
+  }
+  blog.likes += 1;
+  return res.json({ blogId: blog.id, likes: blog.likes });
 });
 
 export { router as blogRouter };
